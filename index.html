@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UEF Chat Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f4f9;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      resize: vertical;
+    }
+    .controls {
+      margin-bottom: 15px;
+    }
+    .models {
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 15px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      background: #0050ef;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #003eaa;
+    }
+    #response {
+      white-space: pre-wrap;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 10px;
+      min-height: 50px;
+    }
+    #tokens {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <h2>UEF Chat Demo</h2>
+
+  <label for="instructions">Instructions (system role):</label>
+  <textarea id="instructions" rows="3" placeholder="e.g., You are UEF Chat, only answer based on UEF materials..."></textarea>
+
+  <label for="prompt">Prompt:</label>
+  <textarea id="prompt" rows="3" placeholder="Type your question here..."></textarea>
+
+  <div class="controls">
+    <div class="models">
+      <label><input type="radio" name="model" value="gpt-4o-mini" checked> GPT-4o-mini</label>
+      <label><input type="radio" name="model" value="gpt-4o"> GPT-4o</label>
+      <label><input type="radio" name="model" value="gpt-4.1"> GPT-4.1</label>
+    </div>
+
+    <button onclick="sendPrompt()">Send</button>
+    <button onclick="clearChat()">Clear</button>
+  </div>
+
+  <h3>Response:</h3>
+  <div id="response">COCK.</div>
+
+  <div id="tokens">Tokens used: 0 / 128k</div>
+
+  <script>
+    // Replace this with your actual Azure Web App endpoint
+    const API_URL = "YOUR_WEB_APP_ENDPOINT_HERE";
+
+    async function sendPrompt() {
+      const instructions = document.getElementById("instructions").value;
+      const prompt = document.getElementById("prompt").value;
+      const responseDiv = document.getElementById("response");
+      const tokensDiv = document.getElementById("tokens");
+
+      const model = document.querySelector("input[name='model']:checked").value;
+
+      responseDiv.textContent = "Loading...";
+
+      try {
+        // Example payload, adjust to match your backend
+        const payload = {
+          instructions: instructions,
+          prompt: prompt,
+          model: model
+        };
+
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error("Error: " + res.statusText);
+        }
+
+        const data = await res.json();
+        responseDiv.textContent = data.answer || "(No answer returned)";
+        tokensDiv.textContent = `Tokens used: ${data.tokens_used || 0} / ${data.max_tokens || "N/A"}`;
+      } catch (err) {
+        responseDiv.textContent = "Error: " + err.message;
+      }
+    }
+
+    function clearChat() {
+      document.getElementById("prompt").value = "";
+      document.getElementById("response").textContent = "No response yet.";
+      document.getElementById("tokens").textContent = "Tokens used: 0 / 128k";
+    }
+  </script>
+</body>
+</html>
