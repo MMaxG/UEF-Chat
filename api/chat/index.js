@@ -79,6 +79,8 @@ module.exports = async function (context, req) {
       }
     });
 
+    console.log("Response received:", JSON.stringify(resp.data, null, 2));
+
     context.res = {
       status: resp.status,
       body: resp.data
