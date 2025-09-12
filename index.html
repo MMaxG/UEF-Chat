@@ -36,6 +36,17 @@
     <div id="tokens">Tokens used: 0 / 128k</div>
   </div>
   <script>
+
+    const modelMap = {
+      "gpt-4o-mini": "uef-chat",
+      "gpt-4o": "gpt-4o",
+      "gpt-4.1": "gpt-4.1"
+    };
+
+    function getModel() {
+      const selected = document.querySelector('input[name="model"]:checked').value;
+      return modelMap[selected] || "uef-chat"; // fallback
+    }
   // Frontend should call the backend proxy; use absolute path so it hits the server root
   const API_URL = "/api/chat";
 
@@ -44,7 +55,8 @@
       const prompt = document.getElementById("prompt").value;
       const responseDiv = document.getElementById("response");
       const tokensDiv = document.getElementById("tokens");
-      const model = "uef-chat";
+      const model = getModel();
+      console.log("Selected model:", model);
 
       console.log("System role instructions:", instructions);
 

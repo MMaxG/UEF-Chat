@@ -15,8 +15,12 @@ module.exports = async function (context, req) {
     : (body.message ? [{ role: 'user', content: String(body.message) }] : []);
 
   // Fallbacks for model and max_tokens
-  const deployment = process.env.OPENAI_DEPLOYMENT || body.model || 'uef-chat';
+  const deployment =  body.model || process.env.OPENAI_DEPLOYMENT || 'uef-chat';
   const max_tokens = body.max_tokens || body.maxTokens || 1024;
+
+  context.log(`Client requested model: ${body.model}`);
+  context.log(`Using Azure deployment: ${deployment}`);
+
 
   // If client provided dataSources AND the server has search envs, prefer server-side wiring
   const useClientDataSources = Array.isArray(body.dataSources) && body.dataSources.length > 0;
@@ -70,7 +74,7 @@ module.exports = async function (context, req) {
   try {
     // Debug logs to help diagnose 404/resource issues
     context.log(`Calling OpenAI URL: ${url}`);
-    try { context.log('Request payload: ' + JSON.stringify(payload)); } catch(e) { context.log('Request payload (unserializable)'); }
+    //try { context.log('Request payload: ' + JSON.stringify(payload)); } catch(e) { context.log('Request payload (unserializable)'); }
 
     const resp = await axios.post(url, payload, {
       headers: {
@@ -79,7 +83,7 @@ module.exports = async function (context, req) {
       }
     });
 
-    console.log("Response received:", JSON.stringify(resp.data, null, 2));
+    //console.log("Response:", JSON.stringify(resp.data, null, 2));
 
     context.res = {
       status: resp.status,
