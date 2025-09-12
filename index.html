@@ -17,7 +17,14 @@
     <textarea id="instructions" rows="3" placeholder="e.g., You are a helpful assisant, only answer based on UEF materials..."></textarea>
 
     <label for="prompt">Prompt:</label>
-    <textarea id="prompt" rows="3" placeholder="Type your question here..."></textarea>
+    <div class="prompt-container">
+      <textarea id="prompt" rows="3" placeholder="Type your question here..."></textarea>
+      <div class="file-upload-row">
+        <label for="fileUpload" class="file-upload-btn"><span>+</span></label>
+        <input type="file" id="fileUpload" style="display:none">
+      </div>
+    </div>
+
 
     <div class="controls">
       <div class="models">
