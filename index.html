@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UEF Chat Demo</title>
   <link rel="stylesheet" href="styles.css">
+  <meta name="version" content="">
 </head>
 <body>
   <div class="container">
@@ -41,8 +42,20 @@
     <div id="response"></div>
 
     <div id="tokens">Tokens used: 0 / 128k</div>
+    <div id="appVersion" class="versionDisplay">1.0.0</div>
   </div>
   <script>
+    const VERSION = "1.0.0";
+
+    const meta = document.querySelector('meta[name="version"]');
+    if (meta) {
+      meta.setAttribute("content", VERSION);
+    }
+
+    const versionDiv = document.getElementById("appVersion");
+    if (versionDiv) {
+      versionDiv.textContent = VERSION;
+    }
 
     const modelMap = {
       "gpt-4o-mini": "uef-chat",

@@ -154,3 +154,13 @@ button:hover {
   top: -3px; /* nudge only the +, not the circle */
 }
 
+.versionDisplay {
+    position: fixed;       /* stick to viewport */
+    bottom: 5px;           /* 5px from bottom */
+    right: 10px;           /* 10px from right */
+    color: #888888;        /* gray text */
+    font-size: 0.8rem;     /* smaller font */
+    opacity: 0.6;          /* slightly faded */
+    pointer-events: none;  /* so it doesn’t block clicks */
+    z-index: 9999;         /* always on top */
+  }
