@@ -19,6 +19,7 @@ module.exports = async function (context, req) {
   const max_tokens = body.max_tokens || body.maxTokens || 1024;
 
   context.log(`Client requested model: ${body.model}`);
+  context.log(`Client System Instructions: ${body.mesages[0].content}`);
   context.log(`Using Azure deployment: ${deployment}`);
 
 
